@@ -2,19 +2,26 @@ pipeline {
     agent {
         docker {
             image 'hashicorp/terraform:1.11.4'
-            args '-v $HOME/.aws:/root/.aws'
+            args "--entrypoint=''"
         }
     }
     environment {
-        AWS_REGION = 'eu-west-1'
-        AWS_PROFILE='terraform'
-        NOTIFICATION_EMAIL = 'your@email.com'  // Replace with your email address
+        NOTIFICATION_EMAIL = 'hyhapi@cyclelove.cc'  // Replace with your email address
     }
     stages {
-        stage('Checkout') {
+
+        stage('Set AWS Credentials') {
             steps {
-                git url: 'https://your/repo/url/terraform-demo.git'  // Replace with your repository URL
-                sh 'chmod +x scripts/setup_prerequisites.sh || true'
+                script {
+                    withCredentials([usernamePassword(
+                        credentialsId: 'aws-credentials',
+                        usernameVariable: 'ACCESS_KEY',
+                        passwordVariable: 'SECRET_KEY'
+                    )]) {
+                        env.AWS_ACCESS_KEY_ID = ACCESS_KEY
+                        env.AWS_SECRET_ACCESS_KEY = SECRET_KEY
+                    }
+                }
             }
         }
 
