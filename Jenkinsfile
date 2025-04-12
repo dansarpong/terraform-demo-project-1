@@ -5,9 +5,6 @@ pipeline {
             args "--entrypoint=''"
         }
     }
-    environment {
-        NOTIFICATION_EMAIL = 'hyhapi@cyclelove.cc'  // Replace with your email address
-    }
     stages {
 
         stage('Set AWS Credentials') {
@@ -53,27 +50,6 @@ pipeline {
     post {
         always {
             cleanWs()
-        }
-        // Notification actions (comment out to disable)
-        success {
-            emailext(
-                subject: "SUCCESS: ${env.JOB_NAME} [${env.BUILD_NUMBER}]",
-                body: """Deployment SUCCESSFUL!
-                Job: ${env.JOB_NAME}
-                Build: ${env.BUILD_NUMBER}
-                Timestamp: ${new Date().format('yyyy-MM-dd HH:mm:ss')}""",
-                to: env.NOTIFICATION_EMAIL
-            )
-        }
-        failure {
-            emailext(
-                subject: "FAILURE: ${env.JOB_NAME} [${env.BUILD_NUMBER}]",
-                body: """Deployment FAILED!
-                Job: ${env.JOB_NAME}
-                Build: ${env.BUILD_NUMBER}
-                Timestamp: ${new Date().format('yyyy-MM-dd HH:mm:ss')}""",
-                to: env.NOTIFICATION_EMAIL
-            )
         }
     }
 }
