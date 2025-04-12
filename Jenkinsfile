@@ -6,7 +6,6 @@ pipeline {
         }
     }
     stages {
-
         stage('Set AWS Credentials') {
             steps {
                 script {
@@ -21,15 +20,15 @@ pipeline {
                 }
             }
         }
-
-        stage('Setup Prerequisites') {
-            steps {
-                dir('scripts') {
-                    sh './setup_prerequisites.sh'
-                }
-            }
-        }
-
+        // stage('Setup Prerequisites') {
+        //     steps {
+        //         dir('scripts') {
+        //             sh 'ls -la'
+        //             sh 'chmod +x ./setup_prerequisites.sh'
+        //             sh './setup_prerequisites.sh'
+        //         }
+        //     }
+        // }
         stage('Terraform Init') {
             steps {
                 dir('dev') {
@@ -37,19 +36,25 @@ pipeline {
                 }
             }
         }
-
+        stage('Terraform Plan') {
+            steps {
+                dir('dev') {
+                    sh 'terraform plan -out=tfplan'
+                }
+            }
+        }
         stage('Terraform Apply') {
             steps {
                 input 'Approve infrastructure deployment?'
                 dir('dev') {
-                    sh 'terraform apply -auto-approve'
+                    sh 'terraform apply -auto-approve tfplan'
                 }
             }
         }
     }
-    post {
-        always {
-            cleanWs()
-        }
-    }
+    // post {
+    //     always {
+    //         cleanWs()
+    //     }
+    // }
 }
