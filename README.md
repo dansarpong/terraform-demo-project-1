@@ -17,7 +17,9 @@ Infrastructure as Code (IaC) using Terraform to provision AWS resources with mod
 - EKS cluster with managed node groups
 - Security groups for access control
 - S3 and DynamoDB for state management
-- Jenkins pipeline for deployment
+- Jenkins pipeline
+  - infrastructure deployment
+  - Slack notifications (optional)
 
 ## Prerequisites
 
@@ -28,6 +30,8 @@ Infrastructure as Code (IaC) using Terraform to provision AWS resources with mod
 ## Project Structure
 
 ```bash
+.
+├── assets/                # Diagrams and other assets
 ├── modules/               # Reusable modules
 │   ├── vpc/               # Network resources
 │   ├── ec2/               # Compute resources
@@ -36,7 +40,8 @@ Infrastructure as Code (IaC) using Terraform to provision AWS resources with mod
 ├── dev/                   # Development environment
 ├── scripts/               # Utility scripts
 ├── Jenkinsfile            # CI/CD pipeline
-└── README.md              # Documentation
+├── README.md              # Documentation
+└── .gitignore             # Git ignore file
 ```
 
 ## Getting Started
@@ -77,6 +82,7 @@ terraform apply
    - Terraform init/plan/apply with approval
 4. Post-build actions:
    - Clean workspace
+   - Notify Slack (optional)
 
 ### 3. Access Resources
 
@@ -104,7 +110,6 @@ terraform destroy
 For AWS prerequisites cleanup:
 
 ```bash
-
 # Remove AWS prerequisites
 chmod +x scripts/teardown_prerequisites.sh
 ./scripts/teardown_prerequisites.sh
