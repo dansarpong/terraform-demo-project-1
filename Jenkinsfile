@@ -20,15 +20,6 @@ pipeline {
                 }
             }
         }
-        // stage('Setup Prerequisites') {
-        //     steps {
-        //         dir('scripts') {
-        //             sh 'ls -la'
-        //             sh 'chmod +x ./setup_prerequisites.sh'
-        //             sh './setup_prerequisites.sh'
-        //         }
-        //     }
-        // }
         stage('Terraform Init') {
             steps {
                 dir('dev') {
@@ -52,6 +43,7 @@ pipeline {
             }
         }
     }
+    // Clean up workspace after build (optional, uncomment to enable)
     // post {
     //     always {
     //         cleanWs()
