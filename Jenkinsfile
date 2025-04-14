@@ -43,10 +43,21 @@ pipeline {
             }
         }
     }
-    // Clean up workspace after build (optional, uncomment to enable)
-    // post {
-    //     always {
-    //         cleanWs()
-    //     }
-    // }
+    post {
+        // Clean up workspace after build (optional, uncomment to enable)
+        // always {
+        //     cleanWs()
+        // }
+        // Notify Slack on build status (optional, uncomment to enable)
+        // success {
+        //     slackSend channel: '#devops',
+        //             color: 'good',
+        //             message: "Deployment SUCCESSFUL: ${env.JOB_NAME} [${env.BUILD_NUMBER}]"
+        // }
+        // failure {
+        //     slackSend channel: '#devops',
+        //             color: 'danger',
+        //             message: "Deployment FAILED: ${env.JOB_NAME} [${env.BUILD_NUMBER}]"
+        // }
+    }
 }
